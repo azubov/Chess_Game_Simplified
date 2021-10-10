@@ -1,13 +1,15 @@
 package model.figures;
 
 import model.ChessFigure;
+import model.Move;
 
 public class King extends ChessFigure {
 
     private static final int MAX_POSSIBLE_STEPS = 1;
+    public static final Move[] POSSIBLE_MOVES = {Move.FORWARD};
 
     public King(String name, int x, int y) {
-        super(name, x, y, MAX_POSSIBLE_STEPS);
+        super(name, x, y, MAX_POSSIBLE_STEPS, POSSIBLE_MOVES);
     }
 
     public void forward(int steps) {

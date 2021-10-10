@@ -1,63 +1,26 @@
 package model;
 
-import model.figures.*;
+// Доска
+// Состоит из точек
 
 public class Board {
     private static final int BOARD_SIZE = 8;
-    Point[][] board = new Point[BOARD_SIZE][BOARD_SIZE];
+    BoardPoint[][] board = new BoardPoint[BOARD_SIZE][BOARD_SIZE];
 
-    private ChessFigure[] white = {
-            new Rook("Rook", 0, 0),
-            new Knight("Knight", 1, 0),
-            new Bishop("Bishop", 2, 0),
-            new King("King", 3,0),
-            new Queen("Queen", 4,0),
-            new Bishop("Bishop", 5, 0),
-            new Knight("Knight", 6, 0),
-            new Rook("Rook", 7,0),
-            new Pawn("Pawn", 0,1),
-            new Pawn("Pawn", 1,1),
-            new Pawn("Pawn", 2,1),
-            new Pawn("Pawn", 3,1),
-            new Pawn("Pawn", 4,1),
-            new Pawn("Pawn", 5,1),
-            new Pawn("Pawn", 6,1),
-            new Pawn("Pawn", 7,1)
-    };
-
-    private ChessFigure[] black = {
-            new Rook("Rook", 0,7),
-            new Knight("Knight", 1, 7),
-            new Bishop("Bishop", 2, 7),
-            new King("King", 3,7),
-            new Queen("Queen", 4,7),
-            new Bishop("Bishop", 5, 7),
-            new Knight("Knight", 6, 7),
-            new Rook("Rook", 7,7),
-            new Pawn("Pawn", 0,6),
-            new Pawn("Pawn", 1,6),
-            new Pawn("Pawn", 2,6),
-            new Pawn("Pawn", 3,6),
-            new Pawn("Pawn", 4,6),
-            new Pawn("Pawn", 5,6),
-            new Pawn("Pawn", 6,6),
-            new Pawn("Pawn", 7,6)
-    };
-
-    public Board() {
+    public Board(ChessFigure[] white, ChessFigure[] black) {
         initBoard();
-//        initChess();
+        initChess(white, black);
     }
 
     private void initBoard() {
         for (int x = 0; x < BOARD_SIZE; x++) {
             for (int y = 0; y < BOARD_SIZE; y++) {
-                board[x][y] = new Point(x,y);
+                board[x][y] = new BoardPoint(x,y);
             }
         }
     }
 
-    private void initChess() {
+    private void initChess(ChessFigure[] white, ChessFigure[] black) {
         for (int i = 0; i < white.length; i++) {
             ChessFigure whiteFigure = white[i];
             ChessFigure blackFigure = black[i];
@@ -66,13 +29,20 @@ public class Board {
         }
     }
 
-    private void setFigure(ChessFigure chessFigure) {
+    public void setFigure(ChessFigure chessFigure) {
         int x = chessFigure.getX();
         int y = chessFigure.getY();
-
         if (checkCoordinates(x, y)) {
-            board[x][y] = chessFigure;
+            BoardPoint boardPoint = board[x][y];
+            boardPoint.setFigure(chessFigure);
         }
+    }
+
+    public void clearBoardPoint(ChessFigure figure) {
+        int x = figure.getX();
+        int y = figure.getY();
+        BoardPoint boardPoint = board[x][y];
+        boardPoint.setFigure(null);
     }
 
     private boolean checkCoordinates(int x, int y) {
@@ -84,14 +54,13 @@ public class Board {
     }
 
     public void printBoard() {
-        for (int x = 0; x < board.length; x++) {
-            for (int y = 0; y < board.length; y++) {
-                Point point = board[x][y];
-                System.out.println(point.toString());
+        for (int y = BOARD_SIZE-1; y >= 0; y--) {
+            System.out.println();
+            for (BoardPoint[] boardPoints : board) {
+                BoardPoint boardPoint = boardPoints[y];
+                System.out.print(boardPoint.toString() + " | ");
             }
         }
+        System.out.println();
     }
-
-    //model.Board of points
-
 }

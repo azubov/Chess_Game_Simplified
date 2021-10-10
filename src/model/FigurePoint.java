@@ -1,11 +1,14 @@
 package model;
 
-public class Point {
+// Точка фигуры
+// есть координаты
+// можно присвоить фигуру
+
+public class FigurePoint {
     private int x;
     private int y;
-    private ChessFigure figure;
 
-    public Point(int x, int y) {
+    public FigurePoint(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -31,16 +34,4 @@ public class Point {
         this.y = y;
     }
 
-    public ChessFigure getFigure() {
-        return figure;
-    }
-
-    public void setFigure(ChessFigure figure) {
-        this.figure = figure;
-    }
-
-    @Override
-    public String toString() {
-        return "x=" + x + ", y=" + y + ", figure=" + figure;
-    }
 }
