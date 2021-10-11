@@ -1,5 +1,11 @@
 package model;
 
+// Фигура
+// Имеет имя
+// Количество максимально возможных шагов
+// Массив возможных движений
+// Назначает координаты в родительский класс
+
 public class ChessFigure extends FigurePoint {
     private final String name;
     private final int maxSteps;
@@ -12,44 +18,43 @@ public class ChessFigure extends FigurePoint {
         this.possibleMoves = possibleMoves;
     }
 
-    private boolean isValid(int steps) {
-        return (0 < steps) && (steps <= maxSteps);
+    // Конструктор копирования
+
+    public ChessFigure(ChessFigure anotherFigure) {
+        super(anotherFigure.getX(), anotherFigure.getY());
+        this.name = "Clone " + anotherFigure.getName();
+        this.maxSteps = anotherFigure.maxSteps;
+        this.possibleMoves = anotherFigure.possibleMoves;
     }
 
-    protected void forward(int steps) {
-        if (isValid(steps)) {
-            for (int i = 0; i < steps; i++) {
-                int y = super.getY();
-                y += 1;
-                super.setY(y);
+    // Варианты доступных ходов для всех фигур
 
-            }
+    protected void forward(int steps) {
+        for (int i = 0; i < steps; i++) {
+            int y = super.getY();
+            y += 1;
+            super.setY(y);
+
         }
     }
     protected void backward(int steps) {
-        if (isValid(steps)) {
-            for (int i = 0; i < steps; i++) {
-                int y = super.getY();
-                super.setY(--y);
-            }
+        for (int i = 0; i < steps; i++) {
+            int y = super.getY();
+            super.setY(--y);
         }
     }
 
     protected void toTheRight(int steps) {
-        if (isValid(steps)) {
-            for (int i = 0; i < steps; i++) {
-                int x = super.getX();
-                super.setX(++x);
-            }
+        for (int i = 0; i < steps; i++) {
+            int x = super.getX();
+            super.setX(++x);
         }
     }
 
     protected void toTheLeft(int steps) {
-        if (isValid(steps)) {
-            for (int i = 0; i < steps; i++) {
-                int x = super.getX();
-                super.setX(--x);
-            }
+        for (int i = 0; i < steps; i++) {
+            int x = super.getX();
+            super.setX(--x);
         }
     }
     protected void diagonalUpRight(int steps) {
@@ -73,34 +78,39 @@ public class ChessFigure extends FigurePoint {
     }
 
     protected void knightUpRight(int steps) {
-        if (isValid(steps)) {
-            int x = super.getX();
-            int y = super.getY();
-            super.setPoint(x + 1, y + 2);
-        }
+        int x = super.getX();
+        int y = super.getY();
+        super.setPoint(x + 1, y + 2);
     }
 
     protected void knightUpLeft(int steps) {
-        if (isValid(steps)) {
-            int x = super.getX();
-            int y = super.getY();
-            super.setPoint(x - 1, y + 2);
-        }
+        int x = super.getX();
+        int y = super.getY();
+        super.setPoint(x - 1, y + 2);
     }
 
     protected void knightDownRight(int steps) {
-        if (isValid(steps)) {
-            int x = super.getX();
-            int y = super.getY();
-            super.setPoint(x + 1, y - 2);
-        }
+        int x = super.getX();
+        int y = super.getY();
+        super.setPoint(x + 1, y - 2);
     }
 
     protected void knightDownLeft(int steps) {
-        if (isValid(steps)) {
-            int x = super.getX();
-            int y = super.getY();
-            super.setPoint(x - 1, y - 2);
+        int x = super.getX();
+        int y = super.getY();
+        super.setPoint(x - 1, y - 2);
+    }
+
+    // Сделать ход
+    // У фигуры которая вызывает метод найти переданный ход в списке ее возможных ходов
+    // Вызвать ход через абстрактный метод enum Move
+
+    public void makeMove(Move pickedMove, int steps) {
+        for (Move possibleMove : possibleMoves) {
+            if (possibleMove == pickedMove) {
+                pickedMove.action(this, steps);
+                break;
+            }
         }
     }
 
@@ -110,14 +120,6 @@ public class ChessFigure extends FigurePoint {
 
     public int getMaxSteps() {
         return maxSteps;
-    }
-
-    public void makeMove(Move pickedMove, int steps) {
-        for (Move possibleMove : possibleMoves) {
-            if (possibleMove == pickedMove) {
-                pickedMove.action(this, steps);
-            }
-        }
     }
 
     public Move[] getPossibleMoves() {

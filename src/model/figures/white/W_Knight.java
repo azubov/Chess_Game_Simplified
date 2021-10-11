@@ -1,19 +1,24 @@
-package model.figures;
+package model.figures.white;
 
 import model.ChessFigure;
 import model.Move;
 
-public class Knight extends ChessFigure {
+// Белая фигура
+// Имеет константу максимально возможных шагов
+// Имеет массив доступных ходов
+// Имеет свойственные фигуре методы из родительского класса
+
+public class W_Knight extends ChessFigure {
 
     public static final int MAX_POSSIBLE_STEPS = 1;
     public static final Move[] POSSIBLE_MOVES = {
-            Move.KNIGHT_UP_RIGHT,
-            Move.KNIGHT_UP_LEFT,
-            Move.KNIGHT_DOWN_RIGHT,
-            Move.KNIGHT_DOWN_LEFT
+            Move.W_KNIGHT_UP_RIGHT,
+            Move.W_KNIGHT_UP_LEFT,
+            Move.W_KNIGHT_DOWN_RIGHT,
+            Move.W_KNIGHT_DOWN_LEFT
     };
 
-    public Knight(String name, int x, int y) {
+    public W_Knight(String name, int x, int y) {
         super(name, x, y, MAX_POSSIBLE_STEPS, POSSIBLE_MOVES);
     }
     

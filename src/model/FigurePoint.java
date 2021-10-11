@@ -2,7 +2,6 @@ package model;
 
 // Точка фигуры
 // есть координаты
-// можно присвоить фигуру
 
 public class FigurePoint {
     private int x;
@@ -33,5 +32,4 @@ public class FigurePoint {
         this.x = x;
         this.y = y;
     }
-
 }

@@ -22,8 +22,10 @@ public class BoardPoint {
         this.figure = figure;
     }
 
+    // toString переопределен для отражения поля в консоли
+
     @Override
     public String toString() {
-        return this.figure != null ? figure.getName() : "null";
+        return this.figure != null ? figure.getName() : "____";
     }
 }

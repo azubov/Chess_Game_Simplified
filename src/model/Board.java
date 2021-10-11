@@ -12,6 +12,8 @@ public class Board {
         initChess(white, black);
     }
 
+    // Инициализируем доску точками
+
     private void initBoard() {
         for (int x = 0; x < BOARD_SIZE; x++) {
             for (int y = 0; y < BOARD_SIZE; y++) {
@@ -19,6 +21,8 @@ public class Board {
             }
         }
     }
+
+    // Инициализируем точки фигурами
 
     private void initChess(ChessFigure[] white, ChessFigure[] black) {
         for (int i = 0; i < white.length; i++) {
@@ -29,29 +33,43 @@ public class Board {
         }
     }
 
+    // Через координаты получить фигуру
+
+    public ChessFigure getFigure(int x, int y) {
+        return getBoardPoint(x,y).getFigure();
+    }
+
+    // Назначить фигуру на поле доски согласно координатам фигуры
+
     public void setFigure(ChessFigure chessFigure) {
         int x = chessFigure.getX();
         int y = chessFigure.getY();
-        if (checkCoordinates(x, y)) {
-            BoardPoint boardPoint = board[x][y];
-            boardPoint.setFigure(chessFigure);
-        }
+        getBoardPoint(x,y).setFigure(chessFigure);
     }
+
+    // Убрать фигуру с поля доски согласно координатам фигуры
 
     public void clearBoardPoint(ChessFigure figure) {
         int x = figure.getX();
         int y = figure.getY();
-        BoardPoint boardPoint = board[x][y];
-        boardPoint.setFigure(null);
+        getBoardPoint(x,y).setFigure(null);
     }
 
-    private boolean checkCoordinates(int x, int y) {
+    public BoardPoint getBoardPoint(int x, int y) {
+        return board[x][y];
+    }
+
+    // Проверить каждую координату, на нахождение в пределах доски
+
+    public boolean checkCoordinates(int x, int y) {
         return (checkCoordinate(x) && checkCoordinate(y));
     }
 
     private boolean checkCoordinate(int coordinate) {
-        return (0 <= coordinate) && (coordinate <= BOARD_SIZE-1);
+        return (0 <= coordinate) && (coordinate < BOARD_SIZE);
     }
+
+    // Вывести в консоль доску
 
     public void printBoard() {
         for (int y = BOARD_SIZE-1; y >= 0; y--) {
@@ -63,4 +81,5 @@ public class Board {
         }
         System.out.println();
     }
+
 }
