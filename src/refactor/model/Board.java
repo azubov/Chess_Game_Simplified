@@ -1,11 +1,9 @@
 package refactor.model;
 
-import refactor.Point;
-
 import java.util.List;
 
 public class Board {
-    private static final int BOARD_SIZE = 8;
+    public static final int BOARD_SIZE = 8;
     Figure[][] board = new Figure[BOARD_SIZE][BOARD_SIZE];
 
     public Board(List<Figure> white, List<Figure> black) {
@@ -35,6 +33,19 @@ public class Board {
         return board[x][y];
     }
 
+    public void move(Figure figure, Point point) {
+        Point currentPoint = figure.getPoint();
+        clear(currentPoint);
+        figure.setPoint(point);
+        setFigure(figure);
+    }
+
+    public void clear(Point point) {
+        int x = point.getX();
+        int y = point.getY();
+        board[x][y] = null;
+    }
+
     public void printBoard() {
         for (int y = BOARD_SIZE-1; y >= 0; y--) {
             System.out.println();
@@ -43,7 +54,7 @@ public class Board {
                     Figure figure = board[x][y];
                     System.out.print(figure.getName() + " | ");
                 } else {
-                    System.out.print( "____" + " | ");
+                    System.out.print( "_"+ x + y +"_" + " | ");
                 }
             }
         }

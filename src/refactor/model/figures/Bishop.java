@@ -1,47 +1,32 @@
 package refactor.model.figures;
 
-import refactor.Point;
+// OK
+
 import refactor.model.Board;
 import refactor.model.Color;
 import refactor.model.Figure;
-
-import java.util.List;
+import refactor.model.Point;
 
 public class Bishop extends Figure {
+
+    private boolean thereIsFigure;
 
     public Bishop(String name, Color color, Point point) {
         super(name, color, point);
     }
 
     @Override
-    public void calculatePossibleMoves(Board board) {
+    public void getPossibleMoves(Board board) {
         System.out.println("bishop");
-
-        // текущая позиция
-        int x = super.getPoint().getX();
-        int y = super.getPoint().getY();
-
-        // путь движения фигуры
-        Point point = super.diagonalUpRight(x, y);
-
-        // проверить фигуру по расчитаной точке
-        Figure checkFigure = board.getFigure(point);
-
-        // если цвет не совпадает или null, то добавить Point в массив возможных ходов
-        if (!isSameColor(checkFigure)) {
-            possibleMoves.add(point);
-            System.out.println(possibleMoves);
-        }
-
+        checkSteps(board);
     }
 
-    public boolean isSameColor(Figure figure) {
-        return figure.getColor() == this.getColor() || figure.getColor() == null;
-    }
+    public void checkSteps(Board board) {
+        diagonalUpRight(board);
+        diagonalUpLeft(board);
+        diagonalDownRight(board);
+        diagonalDownLeft(board);
 
-    @Override
-    public List<Point> getPossibleMoves() {
-        return super.getPossibleMoves();
     }
 }
 

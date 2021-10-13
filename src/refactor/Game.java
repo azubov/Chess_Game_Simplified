@@ -3,6 +3,7 @@ package refactor;
 import refactor.model.Board;
 import refactor.model.Color;
 import refactor.model.Figure;
+import refactor.model.Point;
 import refactor.model.figures.*;
 
 import java.util.ArrayList;
@@ -49,29 +50,50 @@ public class Game {
             new Pawn("B_Pa", Color.BLACK, new Point(7,6))
     ));
 
-    private boolean gameOver = false;
+    public static boolean gameOver = false;
     Board board = new Board(whiteFigures, blackFigures);
 
     public void start() {
-        board.printBoard();
+        // пока в массиве есть фигуры или есть король
         while(!gameOver) {
             play(whiteFigures);
-//            play(blackFigures, board);
+            play(blackFigures);
+            board.printBoard();
         }
+
+        System.out.println("White figures left: " + whiteFigures.size());
+        System.out.println("Black figures left: " + blackFigures.size());
+
     }
 
     public void play(List<Figure> figures) {
-        if (figures.size() > 0) {
-//            Figure figure = (Figure) getRandom(figures);
-            Figure figure = figures.get(8); //Pawn
-            figure.calculatePossibleMoves(board);
+        while (figures.size() > 0) {
+            Figure figure = (Figure) getRandom(figures);
+            figure.getPossibleMoves(board);
 
             if (figure.getPossibleMoves().size() > 0) {
                 Point point = (Point) getRandom(figure.getPossibleMoves());
 
+                System.out.println(figure.getPossibleMoves());
+                System.out.println("Ход " + figure.toString() + " " + point);
+
+                Figure defeated = board.getFigure(point);
+                board.move(figure, point);
+
+                if (defeated instanceof King) {
+                    System.out.println(defeated.getColor() + " has been defeated");
+                    Game.gameOver = true;
+                }
+
+                if (defeated != null && defeated.getColor() == Color.BLACK) {
+                    blackFigures.remove(defeated);
+                } else if (defeated != null && defeated.getColor() == Color.WHITE) {
+                    whiteFigures.remove(defeated);
+                }
+
+                figure.getPossibleMoves().clear();
+                return;
             }
-        } else {
-            gameOver = true;
         }
     }
 

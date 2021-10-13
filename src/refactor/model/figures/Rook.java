@@ -1,9 +1,11 @@
 package refactor.model.figures;
 
-import refactor.Point;
+// OK
+
 import refactor.model.Board;
 import refactor.model.Color;
 import refactor.model.Figure;
+import refactor.model.Point;
 
 public class Rook extends Figure {
 
@@ -12,7 +14,15 @@ public class Rook extends Figure {
     }
 
     @Override
-    public void calculatePossibleMoves(Board board) {
+    public void getPossibleMoves(Board board) {
         System.out.println("rook");
+        checkSteps(board);
+    }
+
+    public void checkSteps(Board board) {
+        forward(board);
+        backward(board);
+        toTheRight(board);
+        toTheLeft(board);
     }
 }

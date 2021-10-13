@@ -1,9 +1,8 @@
 package refactor.model.figures;
 
-import refactor.Point;
-import refactor.model.Board;
-import refactor.model.Color;
-import refactor.model.Figure;
+// OK
+
+import refactor.model.*;
 
 public class Pawn extends Figure {
 
@@ -12,27 +11,57 @@ public class Pawn extends Figure {
     }
 
     @Override
-    public void calculatePossibleMoves(Board board) {
+    public void getPossibleMoves(Board board) {
         System.out.println("pawn");
 
-        // текущая позиция
         int x = super.getPoint().getX();
         int y = super.getPoint().getY();
 
-        // путь движения фигуры
-        Point point = super.forward(x, y);
+        checkSteps(board, x, y);
 
-        // проверить фигуру по расчитаной точке
-        Figure checkFigure = board.getFigure(point);
-
-        // если цвет не совпадает или null, то добавить Point в массив возможных ходов
-        if (wayIsClear(checkFigure)) {
-            super.possibleMoves.add(point);
-            System.out.println(super.possibleMoves);
+        if (pawnsFirstMove()) {
+            y++;
+            checkSteps(board, x, y);
         }
     }
 
-    public boolean wayIsClear(Figure figure) {
-        return figure == null || figure.getColor() != this.getColor();
+    public void checkSteps(Board board, int x, int y) {
+        Point point = makePoint(x, y);
+
+        int attackRight = point.getX() + 1;
+        Point attackPointRight = makeAttackPoint(attackRight, point.getY());
+
+        int attackLeft = point.getX() - 1;
+        Point attackPointLeft = makeAttackPoint(attackLeft, point.getY());
+
+        Figure nextFigure = getNextFigure(board, point);
+        Figure attackFigureRight = getNextAttackFigure(board, attackPointRight);
+        Figure attackFigureLeft = getNextAttackFigure(board, attackPointLeft);
+
+        if (wayIsClear(nextFigure) && checkCoordinates(point.getX(), point.getY())) {
+            addMove(point);
+        }
+        if (attackIsClear(attackFigureRight)) {
+            addMove(attackPointRight);
+        }
+        if (attackIsClear(attackFigureLeft)) {
+            addMove(attackPointLeft);
+        }
+    }
+
+    public Point makePoint(int x, int y) {
+        return super.getColor() == Color.WHITE ? Moves.forward(x, y) : Moves.backward(x,y);
+    }
+
+    public Point makeAttackPoint(int x, int y) {
+        return checkCoordinates(x, y) ? new Point(x, y) : null;
+    }
+
+    public Figure getNextAttackFigure(Board board, Point point) {
+        return point != null ? board.getFigure(point) : null;
+    }
+
+    public boolean pawnsFirstMove() {
+        return super.getPoint().getY() == 1;
     }
 }

@@ -1,13 +1,10 @@
-package model;
+package refactor.model;
 
-// Точка фигуры
-// есть координаты
-
-public class FigurePoint {
+public class Point {
     private int x;
     private int y;
 
-    public FigurePoint(int x, int y) {
+    public Point(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -31,5 +28,10 @@ public class FigurePoint {
     public void setPoint(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    @Override
+    public String toString() {
+        return x + "." + y;
     }
 }
